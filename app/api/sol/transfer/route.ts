@@ -27,10 +27,7 @@ export async function POST(req: Request) {
       payer = Keypair.fromSecretKey((bs58 as any).default ? (bs58 as any).default.decode(secretRaw) : bs58.decode(secretRaw));
     }
 
-    const rpc = process.env.NEXT_PUBLIC_SOLANA_RPC_URL;
-    if (!rpc) {
-      return NextResponse.json({ error: 'SOLANA_RPC_URL not configured' }, { status: 500 });
-    }
+    const rpc = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.devnet.solana.com';
     const connection = new Connection(rpc, 'confirmed');
 
     const toPubkey = new PublicKey(recipientAddress);
