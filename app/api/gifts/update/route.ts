@@ -1,9 +1,15 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
-const supabaseServiceKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
-
-const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+let _admin: SupabaseClient | null = null;
+function getAdmin() {
+  if (!_admin) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
+    const key = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
+    if (!url || !key) throw new Error('Supabase not configured');
+    _admin = createClient(url, key);
+  }
+  return _admin;
+}
 
 function parseSecretKey(envVal?: string) {
   if (!envVal) return null;
@@ -25,7 +31,7 @@ export async function POST(req: Request) {
 
     // If claiming, validate claim_code then update DB (on-chain payout handled separately)
     if (status === 'claimed') {
-      const { data: gift, error: fetchErr } = await supabaseAdmin
+      const { data: gift, error: fetchErr } = await getAdmin()
         .from('gifts')
         .select('*')
         .eq('id', id)
@@ -55,7 +61,7 @@ export async function POST(req: Request) {
       };
       if (transactionSignature) updateData.transaction_signature = transactionSignature;
 
-      const { data, error } = await supabaseAdmin
+      const { data, error } = await getAdmin()
         .from('gifts')
         .update(updateData)
         .eq('id', id)
@@ -71,7 +77,7 @@ export async function POST(req: Request) {
     if (transactionSignature) updateData.transaction_signature = transactionSignature;
     if (status === 'claimed') updateData.claimed_at = new Date().toISOString();
 
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getAdmin()
       .from('gifts')
       .update(updateData)
       .eq('id', id)

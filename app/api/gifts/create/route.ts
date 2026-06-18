@@ -1,9 +1,15 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
-const supabaseServiceKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
-
-const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+let _admin: SupabaseClient | null = null;
+function getAdmin() {
+  if (!_admin) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
+    const key = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
+    if (!url || !key) throw new Error('Supabase not configured');
+    _admin = createClient(url, key);
+  }
+  return _admin;
+}
 
 function isMissingColumnError(error: { message?: string } | null) {
   return Boolean(error?.message && /column|schema cache/i.test(error.message));
@@ -66,7 +72,7 @@ export async function POST(req: Request) {
       created_at: new Date().toISOString()
     };
 
-    let { data, error } = await supabaseAdmin.from('gifts').insert(payload).select().single();
+    let { data, error } = await getAdmin().from('gifts').insert(payload).select().single();
     if (error && isMissingColumnError(error)) {
       delete payload.gift_name;
       delete payload.gift_symbol;
@@ -75,7 +81,7 @@ export async function POST(req: Request) {
       delete payload.attributes_json;
       delete payload.seller_fee_basis_points;
       delete payload.mint_address;
-      ({ data, error } = await supabaseAdmin.from('gifts').insert(payload).select().single());
+      ({ data, error } = await getAdmin().from('gifts').insert(payload).select().single());
     }
     if (error) return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     return new Response(JSON.stringify({ data }), { status: 200 });

@@ -1,9 +1,18 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+let _sb: SupabaseClient | null = null;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+function sb() {
+  if (!_sb) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+    if (!url || !key) {
+      throw new Error('Supabase not configured');
+    }
+    _sb = createClient(url, key);
+  }
+  return _sb;
+}
 
 export async function createGift(giftData: {
   sender_wallet: string;
@@ -39,7 +48,7 @@ export async function createGift(giftData: {
     return json.data;
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await sb()
     .from('gifts')
     .insert(giftData)
     .select()
@@ -50,7 +59,7 @@ export async function createGift(giftData: {
 }
 
 export async function getGiftByClaimCode(claimCode: string) {
-  const { data, error } = await supabase
+  const { data, error } = await sb()
     .from('gifts')
     .select('*')
     .eq('claim_code', claimCode)
@@ -76,7 +85,7 @@ export async function updateGiftStatus(id: string, status: string, transactionSi
     return json.data;
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await sb()
     .from('gifts')
     .update(updateData)
     .eq('id', id)
@@ -100,7 +109,7 @@ export async function claimGift(id: string, claimCode?: string, recipientWallet?
     return json.data;
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await sb()
     .from('gifts')
     .update({
       status: 'claimed',
@@ -116,7 +125,7 @@ export async function claimGift(id: string, claimCode?: string, recipientWallet?
 
 export async function checkSupabaseReady() {
   try {
-    const { data, error } = await supabase.from('gifts').select('id').limit(1);
+    const { data, error } = await sb().from('gifts').select('id').limit(1);
     if (error) return { ok: false, error: error.message };
     return { ok: true };
   } catch (err) {
@@ -132,7 +141,7 @@ export async function saveWalletInsights(walletAddress: string, insights: Record
       created_at: new Date().toISOString()
     } as any;
 
-    const { data, error } = await supabase
+    const { data, error } = await sb()
       .from('wallet_insights')
       .insert(payload)
       .select()

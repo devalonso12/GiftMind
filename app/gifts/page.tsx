@@ -1,7 +1,17 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase-client'   // ← Change this if you renamed the file
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
+
+let _supabase: SupabaseClient | null = null
+function getClient() {
+  if (!_supabase) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+    _supabase = createClient(url, key)
+  }
+  return _supabase
+}
 
 export default function GiftsPage() {
   const [gifts, setGifts] = useState<any[]>([])
@@ -9,7 +19,7 @@ export default function GiftsPage() {
 
   useEffect(() => {
     async function loadGifts() {
-      const { data, error } = await supabase
+      const { data, error } = await getClient()
         .from('gifts')
         .select('*')
       

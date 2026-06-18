@@ -2,8 +2,9 @@
 
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { RecipientProfile, GiftRecommendation, Relationship } from './types';
-import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { getConnection, getBalanceWithFallback } from './solana-config';
+
+const LAMPORTS_PER_SOL = 1_000_000_000;
 
 interface SocialSearch {
   handle: string;
