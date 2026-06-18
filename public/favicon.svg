@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="solarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="40%" stop-color="#fbbf24"/>
+      <stop offset="70%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ef4444"/>
+    </linearGradient>
+    <linearGradient id="chainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="30%" stop-color="#f59e0b"/>
+      <stop offset="60%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Dark cosmos background -->
+  <circle cx="32" cy="32" r="30" fill="#06050d"/>
+  <circle cx="32" cy="32" r="30" stroke="url(#chainGrad)" stroke-width="1.2" fill="none" opacity="0.4"/>
+  <!-- Stars -->
+  <circle cx="10" cy="8" r="0.6" fill="#fbbf24" opacity="0.6"/>
+  <circle cx="52" cy="6" r="0.5" fill="#fbbf24" opacity="0.4"/>
+  <circle cx="7" cy="42" r="0.4" fill="#8b5cf6" opacity="0.4"/>
+  <circle cx="56" cy="48" r="0.5" fill="#06b6d4" opacity="0.5"/>
+  <circle cx="18" cy="56" r="0.3" fill="#fbbf24" opacity="0.3"/>
+  <circle cx="46" cy="55" r="0.4" fill="#8b5cf6" opacity="0.3"/>
+  <!-- Sun at center-top -->
+  <circle cx="32" cy="18" r="6" fill="url(#solarGrad)" filter="url(#softGlow)" opacity="0.9"/>
+  <circle cx="32" cy="18" r="10" fill="none" stroke="#fbbf24" stroke-width="0.4" opacity="0.2"/>
+  <circle cx="32" cy="18" r="14" fill="none" stroke="#f59e0b" stroke-width="0.3" opacity="0.1"/>
+  <!-- Orbit paths -->
+  <ellipse cx="32" cy="18" rx="24" ry="8" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+  <ellipse cx="32" cy="18" rx="30" ry="10" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="0.4"/>
+  <!-- Gift text G -->
+  <g filter="url(#glow)">
+    <text x="11" y="48" font-family="system-ui, sans-serif" font-weight="900" font-size="26" fill="url(#textGrad)">G</text>
+  </g>
+  <!-- Gift text M -->
+  <g filter="url(#glow)">
+    <text x="33" y="48" font-family="system-ui, sans-serif" font-weight="900" font-size="26" fill="url(#chainGrad)">M</text>
+  </g>
+  <!-- Small planet orbiting between G and M -->
+  <circle cx="29" cy="40" r="2" fill="#06b6d4" filter="url(#glow)" opacity="0.7"/>
+  <circle cx="29" cy="40" r="4" fill="none" stroke="#06b6d4" stroke-width="0.3" opacity="0.2"/>
+</svg>

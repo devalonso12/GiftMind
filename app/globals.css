@@ -1,0 +1,286 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 260 40% 5%;
+    --foreground: 40 20% 95%;
+    --card: 260 30% 8%;
+    --card-foreground: 40 20% 95%;
+    --popover: 260 30% 8%;
+    --popover-foreground: 40 20% 95%;
+    --primary: 38 92% 50%;
+    --primary-foreground: 260 40% 5%;
+    --secondary: 260 20% 15%;
+    --secondary-foreground: 40 20% 95%;
+    --muted: 260 20% 13%;
+    --muted-foreground: 260 10% 50%;
+    --accent: 173 58% 38%;
+    --accent-foreground: 260 40% 5%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 40 20% 98%;
+    --border: 260 15% 18%;
+    --input: 260 15% 18%;
+    --ring: 38 92% 50%;
+    --radius: 0.75rem;
+
+    --solar-glow: 0 0 40px rgba(251,191,36,0.2), 0 0 80px rgba(249,115,22,0.08);
+    --nebula-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 60px rgba(139,92,246,0.06);
+    --depth-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+    --stellar-border: 1px solid rgba(251,191,36,0.12);
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Solar / Stellar text gradients */
+.text-solar {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 30%, #f97316 60%, #ef4444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-stellar {
+  background: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-nebula {
+  background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 30%, #8b5cf6 60%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gm {
+  background: linear-gradient(135deg, #06b6d4 0%, #14b8a6 25%, #fbbf24 50%, #f43f5e 75%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Celestial surfaces */
+.surface-stellar {
+  background: linear-gradient(145deg, rgba(139,92,246,0.08) 0%, rgba(6,182,212,0.04) 40%, rgba(251,191,36,0.06) 60%, rgba(139,92,246,0.04) 100%);
+  border: var(--stellar-border);
+  box-shadow: var(--depth-shadow);
+}
+
+.surface-stellar-strong {
+  background: linear-gradient(145deg, rgba(139,92,246,0.12) 0%, rgba(6,182,212,0.06) 40%, rgba(251,191,36,0.10) 60%, rgba(139,92,246,0.06) 100%);
+  border: 1px solid rgba(251,191,36,0.18);
+  box-shadow: var(--depth-shadow), var(--solar-glow);
+}
+
+.surface-solar {
+  background: linear-gradient(145deg, rgba(251,191,36,0.10) 0%, rgba(249,115,22,0.06) 50%, rgba(251,191,36,0.04) 100%);
+  border: 1px solid rgba(251,191,36,0.15);
+  box-shadow: var(--depth-shadow), var(--solar-glow);
+}
+
+.surface-void {
+  background: linear-gradient(145deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.20) 100%);
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* Solar glow button */
+.btn-solar {
+  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 30%, #f97316 70%, #ef4444 100%);
+  box-shadow: 0 0 24px rgba(251,191,36,0.3), 0 0 60px rgba(249,115,22,0.1), 0 4px 16px rgba(0,0,0,0.4);
+  color: #1a0800;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-solar:hover {
+  box-shadow: 0 0 36px rgba(251,191,36,0.45), 0 0 80px rgba(249,115,22,0.15), 0 4px 16px rgba(0,0,0,0.5);
+  transform: translateY(-1px);
+}
+
+.btn-stellar {
+  background: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 50%, #ec4899 100%);
+  box-shadow: 0 0 24px rgba(139,92,246,0.25), 0 0 60px rgba(139,92,246,0.08), 0 4px 16px rgba(0,0,0,0.4);
+  color: #fff;
+  font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-stellar:hover {
+  box-shadow: 0 0 36px rgba(139,92,246,0.4), 0 0 80px rgba(139,92,246,0.12), 0 4px 16px rgba(0,0,0,0.5);
+  transform: translateY(-1px);
+}
+
+/* Depth */
+.depth-4d {
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.06) inset,
+    0 -1px 0 rgba(0,0,0,0.3) inset,
+    0 8px 32px rgba(0,0,0,0.5),
+    0 2px 8px rgba(0,0,0,0.3);
+}
+
+.depth-raised {
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.05) inset,
+    0 12px 40px rgba(0,0,0,0.4),
+    0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Cosmos backgrounds */
+.bg-cosmos {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 60%, rgba(139,92,246,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 30%, rgba(251,191,36,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 80% at 50% 100%, rgba(6,182,212,0.04) 0%, transparent 40%);
+}
+
+.bg-cosmos-hero {
+  background:
+    radial-gradient(ellipse 120% 60% at 30% 40%, rgba(251,191,36,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 70% 60%, rgba(139,92,246,0.06) 0%, transparent 40%),
+    radial-gradient(ellipse 100% 100% at 50% 120%, rgba(6,182,212,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(249,115,22,0.03) 0%, transparent 70%),
+    #0c0a1a;
+}
+
+/* Star field */
+.star-field::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(251,191,36,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 70%, rgba(251,191,36,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 10%, rgba(139,92,246,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 50%, rgba(6,182,212,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 80%, rgba(251,191,36,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 90%, rgba(139,92,246,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 15%, rgba(6,182,212,0.3) 0%, transparent 100%),
+    radial-gradient(0.5px 0.5px at 25% 45%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(0.5px 0.5px at 65% 35%, rgba(255,255,255,0.15) 0%, transparent 100%),
+    radial-gradient(0.5px 0.5px at 45% 85%, rgba(255,255,255,0.1) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+  animation: twinkle 8s ease-in-out infinite alternate;
+}
+
+/* Grain */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Animations */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float-up {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse-solar {
+  0%, 100% { box-shadow: 0 0 20px rgba(251,191,36,0.15), 0 0 60px rgba(249,115,22,0.05); }
+  50% { box-shadow: 0 0 35px rgba(251,191,36,0.3), 0 0 80px rgba(249,115,22,0.1); }
+}
+
+@keyframes pulse-stellar {
+  0%, 100% { box-shadow: 0 0 20px rgba(139,92,246,0.15), 0 0 60px rgba(139,92,246,0.05); }
+  50% { box-shadow: 0 0 35px rgba(139,92,246,0.3), 0 0 80px rgba(139,92,246,0.1); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+@keyframes slide-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes solstice-ray {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 0.6; transform: scaleY(1.1); }
+}
+
+.animate-shimmer { background-size: 200% 100%; animation: shimmer 3s linear infinite; }
+.animate-float-up { animation: float-up 4s ease-in-out infinite; }
+.animate-pulse-solar { animation: pulse-solar 3s ease-in-out infinite; }
+.animate-pulse-stellar { animation: pulse-stellar 3s ease-in-out infinite; }
+.animate-orbit { animation: orbit 20s linear infinite; }
+.animate-slide-up { animation: slide-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-fade-in { animation: fade-in 0.8s ease forwards; }
+.animate-solstice-ray { animation: solstice-ray 4s ease-in-out infinite; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+::-webkit-scrollbar-thumb { background: rgba(251,191,36,0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(251,191,36,0.4); }
+
+/* Tags */
+.tag-nft { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
+.tag-defi { background: rgba(6,182,212,0.12); color: #06b6d4; border: 1px solid rgba(6,182,212,0.25); }
+.tag-gaming { background: rgba(34,197,94,0.12); color: #22c55e; border: 1px solid rgba(34,197,94,0.25); }
+.tag-art { background: rgba(236,72,153,0.12); color: #ec4899; border: 1px solid rgba(236,72,153,0.25); }
+.tag-tech { background: rgba(139,92,246,0.12); color: #a78bfa; border: 1px solid rgba(139,92,246,0.25); }
+.tag-crypto { background: rgba(249,115,22,0.12); color: #f97316; border: 1px solid rgba(249,115,22,0.25); }
+.tag-music { background: rgba(168,85,247,0.12); color: #a855f7; border: 1px solid rgba(168,85,247,0.25); }
+.tag-dao { background: rgba(245,158,11,0.12); color: #f59e0b; border: 1px solid rgba(245,158,11,0.25); }
+
+.platform-badge {
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+/* Wallet option cards */
+.wallet-option {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+.wallet-option:hover {
+  border-color: rgba(251,191,36,0.3);
+  background: linear-gradient(145deg, rgba(251,191,36,0.08) 0%, rgba(139,92,246,0.04) 100%);
+}
+.wallet-option.detected {
+  border-color: rgba(34,197,94,0.4);
+}
+.wallet-option.not-detected {
+  opacity: 0.5;
+}
+.wallet-option.not-detected:hover {
+  opacity: 0.7;
+}
