@@ -17,8 +17,8 @@ Module not found: Can't resolve 'encoding' in 'C:\Users\Administrator\Desktop\pr
 Import trace for requested module:
 ./node_modules/node-fetch/lib/index.js
 ./node_modules/@solana/web3.js/lib/index.cjs.js
-./lib/store.tsx
-./app/page.tsx
+./lib/transaction.ts
+./app/dashboard/page.tsx
 
 ./node_modules/ws/lib/buffer-util.js
 Module not found: Can't resolve 'bufferutil' in 'C:\Users\Administrator\Desktop\project\node_modules\ws\lib'
@@ -29,8 +29,8 @@ Import trace for requested module:
 ./node_modules/ws/index.js
 ./node_modules/rpc-websockets/dist/index.cjs
 ./node_modules/@solana/web3.js/lib/index.cjs.js
-./lib/store.tsx
-./app/page.tsx
+./lib/transaction.ts
+./app/dashboard/page.tsx
 
    Skipping linting
    Checking validity of types ...
@@ -48,7 +48,7 @@ Import trace for requested module:
    Collecting build traces ...
 
 Route (app)                              Size     First Load JS
-Γöî Γùï /                                    24.6 kB         265 kB
+Γöî Γùï /                                    23.7 kB         264 kB
 Γö£ Γùï /_not-found                          875 B          81.5 kB
 Γö£ ╬╗ /api/ai/recommend                    0 B                0 B
 Γö£ ╬╗ /api/auth/link-wallet                0 B                0 B

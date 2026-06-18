@@ -5,25 +5,22 @@ export async function generateGiftRecommendation(
   relationship: Relationship,
   customRelationship?: string
 ): Promise<GiftRecommendation> {
-  const relationshipText = relationship;
-
   if (typeof window !== 'undefined') {
-    try {
-      const resp = await fetch('/api/ai/recommend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ profile, relationship, customRelationship }),
-      });
-      if (resp.ok) {
-        const json = await resp.json();
-        return json as GiftRecommendation;
-      }
-    } catch {
-      // fall through
+    const resp = await fetch('/api/ai/recommend', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ profile, relationship, customRelationship }),
+    });
+    const text = await resp.text();
+    let json: any;
+    try { json = JSON.parse(text); } catch {
+      throw new Error(`AI recommendation failed: ${text.slice(0, 200)}`);
     }
+    if (!resp.ok) throw new Error(json.error || 'AI recommendation failed');
+    return json as GiftRecommendation;
   }
 
-  return generateFallbackRecommendation(profile, relationshipText);
+  throw new Error('AI recommendation is only available in the browser.');
 }
 
 export async function generateRankedRecommendations(
@@ -100,61 +97,4 @@ export async function regenerateRecommendation(
   return generateGiftRecommendation(profileWithVariant, relationship);
 }
 
-function generateFallbackRecommendation(profile: RecipientProfile, relationship: string): GiftRecommendation {
-  const amounts: Record<string, number> = { father: 0.5, boyfriend: 0.3, sibling: 0.2 };
-  let baseAmount = amounts[relationship] || 0.2;
-  const hasDefiInterest = profile.socialInterests.some((i: any) =>
-    i.topic.toLowerCase().includes('defi') || i.topic.toLowerCase().includes('crypto')
-  );
-  if (hasDefiInterest) baseAmount *= 1.2;
-  const amount = Math.min(Math.max(Math.round(baseAmount * 100) / 100, 0.05), 1.0);
 
-  const interestList = profile.socialInterests.slice(0, 3).map((i: any) => i.topic).join(', ');
-  const insightList = profile.walletInsights.slice(0, 2).map((i: any) => i.label).join(' and ');
-  const hasNftSignal = profile.walletInsights.some((i: any) =>
-    i.label.toLowerCase().includes('nft') || i.label.toLowerCase().includes('collector')
-  );
-
-  const hobbies = interestList || "all the cool stuff you're into";
-  const signals = insightList || 'building on-chain';
-
-  if (relationship === 'father') {
-    return {
-      giftType: 'SOL',
-      amount,
-      reason: `A dad wants to set his daughter up for the future. She's into ${hobbies}, and this SOL gives her a foundation to explore, learn from, and grow. It's not just crypto — it's a head start.`,
-      socialSignals: `She follows ${(profile.socialInterests || []).slice(0, 2).map((i: any) => i.topic).join(' and ')} — building her own path`,
-      walletSignals: `${signals}`,
-      personalizedMessage: `Hey kiddo — this one's for you. I know it's a little different from the usual gifts, but I wanted to give you something that grows with you. Hold onto it, learn what you can, and build something awesome. Love you.`,
-      confidence: 0.85,
-    };
-  }
-
-  if (relationship === 'boyfriend' || relationship === 'sibling') {
-    const msg = relationship === 'boyfriend'
-      ? `I saw this and thought of you immediately. The vibe, the style — it's so you. Hope it makes you smile as much as you make me smile.`
-      : `Yo — saw this and literally thought "this is them." Don't ask me why, it just fits. Anyway, hope you like it. Miss you!`;
-
-    return {
-      giftType: 'NFT',
-      amount: 1,
-      reason: relationship === 'boyfriend'
-        ? `A boyfriend knows her taste better than anyone. She's into ${hobbies}${hasNftSignal ? ' and already collects NFTs' : ''} — a 1-of-1 piece that matches her vibe is the kind of gift that says "I get you."`
-        : `Siblings just know. She's into ${hobbies}${hasNftSignal ? ' and has an eye for digital art' : ''} — a fun NFT keepsake that matches her energy is way more personal than sending SOL.`,
-      socialSignals: `She's into ${(profile.socialInterests || []).slice(0, 2).map((i: any) => i.topic).join(' and ')} — creative, curious, her own person`,
-      walletSignals: `${signals}`,
-      personalizedMessage: msg,
-      confidence: 0.82,
-    };
-  }
-
-  return {
-    giftType: 'SOL',
-    amount,
-    reason: `Based on interest in ${hobbies} and ${signals}, this SOL gift is designed to support their Web3 journey.`,
-    socialSignals: `Interest in ${hobbies}`,
-    walletSignals: `${signals}`,
-    personalizedMessage: `A little something for your wallet. Use it, trade it, or just hold it — it's yours.`,
-    confidence: 0.75,
-  };
-}

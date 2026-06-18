@@ -1,5 +1,3 @@
-import { NextResponse } from 'next/server';
-
 interface RecOutput {
   giftType: 'SOL' | 'NFT' | 'TOKEN';
   amount: number;
@@ -10,12 +8,6 @@ interface RecOutput {
   personalizedMessage: string;
   confidence: number;
 }
-
-const RELATIONSHIP_GIFT_MAP: Record<string, { giftType: 'SOL' | 'NFT'; label: string }> = {
-  father:   { giftType: 'SOL', label: 'Long-term SOL savings — a foundation for her future' },
-  boyfriend: { giftType: 'NFT', label: 'A 1-of-1 NFT that matches her collection and taste' },
-  sibling:  { giftType: 'NFT', label: 'A fun NFT keepsake that reflects her personality' },
-};
 
 function buildProfileSummary(profile: any): string {
   if (!profile) return 'No profile data available.';
@@ -31,42 +23,6 @@ function buildProfileSummary(profile: any): string {
   ].join('\n');
 }
 
-function fallbackRecommendation(profile: any, relationship: string): RecOutput {
-  const map = RELATIONSHIP_GIFT_MAP[relationship] || RELATIONSHIP_GIFT_MAP.sibling;
-  const interests = (profile?.socialInterests || []).slice(0, 3).map((i: any) => i.topic).join(', ');
-  const insights = (profile?.walletInsights || []).slice(0, 2).map((i: any) => i.label).join(', ');
-  const hasNftCollection = (profile?.walletAnalysis?.tokenHoldings || []).filter((t: any) => t.amount <= 1).length > 0;
-  const hobbies = interests || 'creative stuff';
-
-  if (map.giftType === 'NFT') {
-    const msg = relationship === 'boyfriend'
-      ? `I saw this and thought of you immediately. The vibe, the style — it's so you. Hope it makes you smile.`
-      : `This one's got your name written all over it. Don't ask me why, it just fits you perfectly. Hope you like it!`;
-    return {
-      giftType: 'NFT',
-      amount: 1,
-      reason: hasNftCollection
-        ? `She already collects NFTs, and as her ${relationship}, a 1-of-1 piece that matches her collection and her interest in ${hobbies} is more thoughtful than sending generic SOL. It shows you pay attention.`
-        : `An NFT fits her personality — she's into ${hobbies}, and as her ${relationship}, giving her something unique and collectible says more than a token transfer ever could.`,
-      socialSignals: `She follows ${(profile?.socialInterests || []).slice(0, 2).map((i: any) => i.topic).join(' and ')}`,
-      walletSignals: `${insights || 'active on-chain'}`,
-      personalizedMessage: msg,
-      confidence: 0.88,
-    };
-  }
-
-  const baseAmount = relationship === 'father' ? 0.5 : relationship === 'boyfriend' ? 0.3 : 0.2;
-  return {
-    giftType: 'SOL',
-    amount: Math.min(Math.max(baseAmount, 0.05), 1.0),
-    reason: `As her father, a SOL gift is about long-term thinking. She's into ${hobbies} and ${insights || 'finding her way on-chain'} — this gives her a foundation to explore, learn, and build on.`,
-    socialSignals: `She follows ${(profile?.socialInterests || []).slice(0, 2).map((i: any) => i.topic).join(' and ')}`,
-    walletSignals: `${insights || 'active wallet'}`,
-    personalizedMessage: `Hey — I know this isn't your usual birthday gift, but I wanted to give you something that grows with you. Learn what you can, hold onto it, and build something awesome. Love you.`,
-    confidence: 0.85,
-  };
-}
-
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -75,7 +31,7 @@ export async function POST(req: Request) {
     const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
     if (!key) {
-      return new Response(JSON.stringify(fallbackRecommendation(profile, relationship)), { status: 200 });
+      return new Response(JSON.stringify({ error: 'OpenAI API key not configured. Set OPENAI_API_KEY to use AI recommendations.' }), { status: 400 });
     }
 
     const relText = relationship;
@@ -142,13 +98,7 @@ Task: Recommend the perfect on-chain gift for this recipient from this sender's 
       const parsed = JSON.parse(text) as RecOutput;
       return new Response(JSON.stringify(parsed), { status: 200 });
     } catch {
-      const jsonMatch = text.match(/\{[\s\S]*?\}/);
-      if (jsonMatch) {
-        try {
-          return new Response(jsonMatch[0], { status: 200 });
-        } catch { /* fallback */ }
-      }
-      return new Response(JSON.stringify(fallbackRecommendation(profile, relationship)), { status: 200 });
+      return new Response(JSON.stringify({ error: 'AI returned malformed JSON. Try again.' }), { status: 502 });
     }
   } catch (err) {
     return new Response(JSON.stringify({ error: err instanceof Error ? err.message : String(err) }), { status: 500 });
