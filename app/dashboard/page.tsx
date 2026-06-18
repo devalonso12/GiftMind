@@ -4,11 +4,11 @@ import React, { useEffect, useState } from 'react'
 import { SolarSystemBG } from '../../components/solar-system-bg'
 import { createClient } from '@supabase/supabase-js'
 import { useGiftFlow } from '../../lib/store'
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
 import { Header } from '../../components/header'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null
 import { Gift, BarChart3, TrendingUp, Wallet, Gift as GiftIcon, ArrowLeft, ExternalLink, Loader2, CheckCircle, Clock } from 'lucide-react'
 import Link from 'next/link'
 import { getExplorerLink } from '../../lib/transaction'
@@ -55,6 +55,8 @@ export default function DashboardPage() {
         setLoading(false)
         return
       }
+
+      if (!supabase) return
 
       const sentQuery = supabase
         .from('gifts')
