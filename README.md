@@ -17,7 +17,7 @@ GiftMind draws inspiration from the Summer Solstice — the longest day of the y
 ## Submission Requirements
 
 ### Live Devnet Link
-[Deployed URL — insert here]
+[Live Devnet Link](https://maingiftmind.vercel.app)
 
 ### Demo Video
 2–3 minute video showing: profile build → AI recommendation → sender approval → on-chain delivery → recipient claim.
