@@ -1,72 +1,60 @@
-// Server-side helpers for SPL token / NFT flows.
-// These functions perform best-effort operations and must be executed in a trusted server/worker environment.
+import { Connection, Keypair, PublicKey } from '@solana/web3.js';
+import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import bs58 from 'bs58';
 
 type KeyInput = string | number[] | Uint8Array;
 
-function parseKey(input: KeyInput) {
-  const web3 = require('@solana/web3.js');
-  const bs58 = require('bs58');
+function parseKey(input: KeyInput): Keypair {
   if (!input) throw new Error('Missing secret key');
   if (typeof input === 'string') {
     const s = input.trim();
-    if (s.startsWith('[')) return web3.Keypair.fromSecretKey(Uint8Array.from(JSON.parse(s)));
-    return web3.Keypair.fromSecretKey(bs58.decode(s));
+    if (s.startsWith('[')) return Keypair.fromSecretKey(Uint8Array.from(JSON.parse(s)));
+    return Keypair.fromSecretKey(bs58.decode(s));
   }
-  if (Array.isArray(input)) return require('@solana/web3.js').Keypair.fromSecretKey(Uint8Array.from(input));
-  return require('@solana/web3.js').Keypair.fromSecretKey(input);
+  if (Array.isArray(input)) return Keypair.fromSecretKey(Uint8Array.from(input));
+  return Keypair.fromSecretKey(input);
 }
 
 export async function transferSPLToken(opts: {
-  payerSecret: KeyInput; // JSON array or base58 string
+  payerSecret: KeyInput;
   mintAddress: string;
   destination: string;
-  amount: number; // in base token units (not decimals-adjusted)
+  amount: number;
   rpcUrl?: string;
 }) {
   const { payerSecret, mintAddress, destination, amount, rpcUrl } = opts;
-  const web3 = await import('@solana/web3.js');
-  const splToken = await import('@solana/spl-token');
+  const payer = parseKey(payerSecret);
+  const rpc = rpcUrl || process.env.SOLANA_RPC_URL;
+  if (!rpc) throw new Error('RPC URL not configured');
+  const connection = new Connection(rpc, 'confirmed');
 
-  const payer = parseKey(payerSecret as any);
-  const connection = new web3.Connection(rpcUrl || process.env.SOLANA_RPC_URL || 'https://api.devnet.solana.com', 'confirmed');
+  const mint = new PublicKey(mintAddress);
+  const token = new Token(connection, mint, TOKEN_PROGRAM_ID, payer);
 
-  // get mint and ATAs
-  const mint = new web3.PublicKey(mintAddress);
-  const fromAta = await (splToken as any).getOrCreateAssociatedTokenAccount(connection, payer, mint, payer.publicKey);
-  const toAta = await (splToken as any).getOrCreateAssociatedTokenAccount(connection, payer, mint, new web3.PublicKey(destination));
+  const fromAta = await token.getOrCreateAssociatedAccountInfo(payer.publicKey);
+  const toAta = await token.getOrCreateAssociatedAccountInfo(new PublicKey(destination));
 
-  // perform transfer
-  const sig = await (splToken as any).transfer(
-    connection,
-    payer,
-    fromAta.address,
-    toAta.address,
-    payer.publicKey,
-    amount
-  );
+  const signature = await token.transfer(fromAta.address, toAta.address, payer, [], amount);
 
-  return { ok: true, signature: sig };
+  return { ok: true, signature };
 }
 
 export async function mintNFT(opts: {
   payerSecret: KeyInput;
   rpcUrl?: string;
-  decimals?: number; // for NFT-like use 0
-  supply?: number; // default 1
+  decimals?: number;
+  supply?: number;
 }) {
   const { payerSecret, rpcUrl, decimals = 0, supply = 1 } = opts;
-  const web3 = await import('@solana/web3.js');
-  const splToken = await import('@solana/spl-token');
+  const payer = parseKey(payerSecret);
+  const rpc = rpcUrl || process.env.SOLANA_RPC_URL;
+  if (!rpc) throw new Error('RPC URL not configured');
+  const connection = new Connection(rpc, 'confirmed');
 
-  const payer = parseKey(payerSecret as any);
-  const connection = new web3.Connection(rpcUrl || process.env.SOLANA_RPC_URL || 'https://api.devnet.solana.com', 'confirmed');
+  const token = await Token.createMint(connection, payer, payer.publicKey, null, decimals, TOKEN_PROGRAM_ID);
 
-  // create mint
-  const mint = await (splToken as any).createMint(connection, payer, payer.publicKey, null, decimals);
+  const ata = await token.getOrCreateAssociatedAccountInfo(payer.publicKey);
+  await token.mintTo(ata.address, payer, [], supply);
 
-  // create associated token account and mint to it
-  const ata = await (splToken as any).getOrCreateAssociatedTokenAccount(connection, payer, mint, payer.publicKey);
-  const tx = await (splToken as any).mintTo(connection, payer, mint, ata.address, payer.publicKey, supply);
-
-  return { ok: true, mint: mint.toBase58(), ata: ata.address.toBase58(), tx }; 
+  return { ok: true, mint: token.publicKey.toBase58(), ata: ata.address.toBase58() };
 }

@@ -1,7 +1,7 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 import { getConnection } from './solana-config';
 
-const TOKEN_PROGRAM_ID = new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+const TOKEN_PROGRAM_ID = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA';
 
 // Well-known Devnet tokens
 const KNOWN_TOKENS: Record<string, string> = {
@@ -19,7 +19,7 @@ export async function fetchWalletTokens(address: string): Promise<{ mint: string
     const publicKey = new PublicKey(address);
 
     const tokenAccounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
-      programId: TOKEN_PROGRAM_ID,
+      programId: new PublicKey(TOKEN_PROGRAM_ID),
     });
 
     return tokenAccounts.value

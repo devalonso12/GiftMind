@@ -2,7 +2,7 @@ import { Connection, PublicKey } from '@solana/web3.js';
 import { WalletInsight } from './types';
 import { getConnection, getBalanceWithFallback } from './solana-config';
 
-const TOKEN_PROGRAM_ID = new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+const TOKEN_PROGRAM_ID = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA';
 
 export interface WalletAnalysis {
   solBalance: number;
@@ -35,7 +35,7 @@ export async function analyzeWallet(walletAddress: string): Promise<WalletAnalys
     try {
       const conn = new Connection(url, 'confirmed');
       const tokenAccounts = await conn.getParsedTokenAccountsByOwner(publicKey, {
-        programId: TOKEN_PROGRAM_ID,
+        programId: new PublicKey(TOKEN_PROGRAM_ID),
       });
       tokenHoldings = tokenAccounts.value.map((account: any) => {
         const info = account.account.data.parsed.info;

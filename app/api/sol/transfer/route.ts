@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { Connection, Keypair, PublicKey, SystemProgram, Transaction, sendAndConfirmTransaction, LAMPORTS_PER_SOL } from '@solana/web3.js';
-import bs58 from 'bs58';
 
 export async function POST(req: Request) {
   try {
@@ -8,6 +7,11 @@ export async function POST(req: Request) {
 
     if (!recipientAddress || !amount) {
       return NextResponse.json({ error: 'Missing recipientAddress or amount' }, { status: 400 });
+    }
+
+    const solAmount = Number(amount);
+    if (!isFinite(solAmount) || solAmount <= 0) {
+      return NextResponse.json({ error: 'Invalid amount' }, { status: 400 });
     }
 
     const secretRaw = process.env.SOLANA_ESCROW_SECRET_KEY;
@@ -19,19 +23,18 @@ export async function POST(req: Request) {
     if (secretRaw.trim().startsWith('[')) {
       payer = Keypair.fromSecretKey(Uint8Array.from(JSON.parse(secretRaw)));
     } else {
-      payer = Keypair.fromSecretKey(bs58.decode(secretRaw));
+      const bs58 = await import('bs58');
+      payer = Keypair.fromSecretKey((bs58 as any).default ? (bs58 as any).default.decode(secretRaw) : bs58.decode(secretRaw));
     }
 
-    const rpc = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.devnet.solana.com';
+    const rpc = process.env.NEXT_PUBLIC_SOLANA_RPC_URL;
+    if (!rpc) {
+      return NextResponse.json({ error: 'SOLANA_RPC_URL not configured' }, { status: 500 });
+    }
     const connection = new Connection(rpc, 'confirmed');
 
-    const bal = await connection.getBalance(payer.publicKey);
-    if (bal < LAMPORTS_PER_SOL * 0.05) {
-      await connection.requestAirdrop(payer.publicKey, LAMPORTS_PER_SOL).catch(() => {});
-    }
-
     const toPubkey = new PublicKey(recipientAddress);
-    const lamports = Math.round(Number(amount) * LAMPORTS_PER_SOL);
+    const lamports = Math.round(solAmount * LAMPORTS_PER_SOL);
 
     const tx = new Transaction().add(
       SystemProgram.transfer({

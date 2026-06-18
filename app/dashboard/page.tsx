@@ -5,13 +5,13 @@ import { SolarSystemBG } from '../../components/solar-system-bg'
 import { createClient } from '@supabase/supabase-js'
 import { useGiftFlow } from '../../lib/store'
 import { Header } from '../../components/header'
+import { Gift, BarChart3, TrendingUp, Wallet, Gift as GiftIcon, ArrowLeft, ExternalLink, Loader2, CheckCircle, Clock } from 'lucide-react'
+import Link from 'next/link'
+import { getExplorerLink } from '../../lib/transaction'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null
-import { Gift, BarChart3, TrendingUp, Wallet, Gift as GiftIcon, ArrowLeft, ExternalLink, Loader2, CheckCircle, Clock } from 'lucide-react'
-import Link from 'next/link'
-import { getExplorerLink } from '../../lib/transaction'
 
 interface GiftRow {
   id: string
