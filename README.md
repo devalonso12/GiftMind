@@ -116,6 +116,12 @@ Visit https://faucet.solana.com
 
 MIT License — see [LICENSE](LICENSE)
 
+## Team
+
+- **Prince Alonso** — Team Lead, AI/Backend
+- **vihkiewrites** — Front-end Development
+- **Jason** — Blockchain Engineer
+
 ---
 
 Built for VBH3 Summer Solstice · BOHBOOverse Ecosystem · Solana Devnet
