@@ -1,0 +1,79 @@
+
+> giftmind@0.1.0 build
+> next build
+
+   Creating an optimized production build ...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+Browserslist: caniuse-lite is outdated. Please run:
+  npx browserslist@latest --update-db
+  Why you should do it regularly: https://github.com/browserslist/browserslist#browsers-data-updating
+ ΓÜá Compiled with warnings
+
+./node_modules/node-fetch/lib/index.js
+Module not found: Can't resolve 'encoding' in 'C:\Users\Administrator\Desktop\project\node_modules\node-fetch\lib'
+
+Import trace for requested module:
+./node_modules/node-fetch/lib/index.js
+./node_modules/@solana/web3.js/lib/index.cjs.js
+./lib/store.tsx
+./app/page.tsx
+
+./node_modules/ws/lib/buffer-util.js
+Module not found: Can't resolve 'bufferutil' in 'C:\Users\Administrator\Desktop\project\node_modules\ws\lib'
+
+Import trace for requested module:
+./node_modules/ws/lib/buffer-util.js
+./node_modules/ws/lib/permessage-deflate.js
+./node_modules/ws/index.js
+./node_modules/rpc-websockets/dist/index.cjs
+./node_modules/@solana/web3.js/lib/index.cjs.js
+./lib/store.tsx
+./app/page.tsx
+
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/17) ...
+
+   Generating static pages (4/17) 
+
+   Generating static pages (8/17) 
+
+   Generating static pages (12/17) 
+
+ Γ£ô Generating static pages (17/17) 
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+Γöî Γùï /                                    24.6 kB         265 kB
+Γö£ Γùï /_not-found                          875 B          81.5 kB
+Γö£ ╬╗ /api/ai/recommend                    0 B                0 B
+Γö£ ╬╗ /api/auth/link-wallet                0 B                0 B
+Γö£ ╬╗ /api/gifts/create                    0 B                0 B
+Γö£ ╬╗ /api/gifts/finalize                  0 B                0 B
+Γö£ ╬╗ /api/gifts/update                    0 B                0 B
+Γö£ Γùï /api/health                          0 B                0 B
+Γö£ ╬╗ /api/nft-metadata/[id]               0 B                0 B
+Γö£ ╬╗ /api/nft/mint                        0 B                0 B
+Γö£ ╬╗ /api/nft/transfer                    0 B                0 B
+Γö£ ╬╗ /api/notifications/send              0 B                0 B
+Γö£ ╬╗ /api/search/social                   0 B                0 B
+Γö£ ╬╗ /api/sol/transfer                    0 B                0 B
+Γö£ ╬╗ /claim/[code]                        8.32 kB         236 kB
+Γö£ Γùï /dashboard                           3.21 kB         236 kB
+Γöö Γùï /gifts                               1.38 kB         147 kB
++ First Load JS shared by all            80.6 kB
+  Γö£ chunks/472-784a4e7c13e48734.js       27.5 kB
+  Γö£ chunks/fd9d1056-0007a22994b3697d.js  51.1 kB
+  Γö£ chunks/main-app-e1b1e456502acdcc.js  230 B
+  Γöö chunks/webpack-a601686ed93e7f0a.js   1.84 kB
+
+
+╞Æ Middleware                             25.3 kB
+
+╬╗  (Server)  server-side renders at runtime (uses getInitialProps or getServerSideProps)
+Γùï  (Static)  automatically rendered as static HTML (uses no initial props)
+

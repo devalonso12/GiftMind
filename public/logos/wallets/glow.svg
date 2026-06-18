@@ -1,0 +1,11 @@
+<svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="32" fill="url(#glow_grad)"/>
+  <defs>
+    <linearGradient id="glow_grad" x1="0" y1="0" x2="128" y2="128">
+      <stop offset="0%" stop-color="#6B54FF"/>
+      <stop offset="100%" stop-color="#F04CFF"/>
+    </linearGradient>
+  </defs>
+  <path d="M44 48C44 48 48 44 52 44C56 44 60 48 60 48L64 58L68 48C68 48 72 44 76 44C80 44 84 48 84 48V80H44V48Z" fill="white"/>
+  <circle cx="64" cy="58" r="4" fill="url(#glow_grad)"/>
+</svg>

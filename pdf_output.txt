@@ -1,0 +1,372 @@
+=== PAGE 1 ===
+VBH3 Summer Solstice · BOHBOOverse Ecosystem · Solana Edition · All decisions final
+Page 1
+ VBH3
+ SUMMER SOLSTICE
+ Official Rules & GiftMind Build Brief
+ BOHBOOverse Ecosystem · Solana Edition · Team Event · June 5 – June 22, 2026
+These Official Rules govern VBH3 Summer Solstice ("Challenge"), a virtual team hackathon themed around Solar
+Systems, Stars, and the Summer Solstice, hosted within the BOHBOOverse ecosystem on Solana. By registering or
+submitting a project, all team members agree to these rules in full. All decisions by the Administrator are final and
+binding. These rules are strictly enforced — any team or participant in violation may be penalized, disqualified, or
+suspended.
+1. Challenge Overview
+VBH3 Summer Solstice is a virtual, team-based hackathon challenging builders to create open-source Solana projects inspired
+by Solar Systems, Sun, Stars, and the Summer Solstice. All projects must meaningfully incorporate this theme.
+Theme: Solar Systems · Sun · Stars · Summer Solstice — your project must reflect this theme.
+All projects MUST:
+ Be built on Solana Devnet/Testnet only
+ Use SPL and/or @solana/web3.js or Anchor framework where applicable
+ Use approved Solana ecosystem tooling
+ Provide a live Devnet link, functional at time of judging
+ Open-source all intellectual property under MIT or Apache 2.0 license
+ Include a reproducible repository (Dockerfile not required, but encouraged)
+ Reflect the Summer Solstice / Solar / Stars theme in concept or execution
+Max Project Cost: $50 USD per team — to ensure accessibility and fairness for all.
+2. Eligibility & Team Structure
+Participants must:
+ Be 18 years of age or older
+ Not reside in a restricted jurisdiction
+ Not be an affiliated employee of the organizers
+Team Size:
+ Minimum: 3 members · Maximum: 4 members (aligned with GiftMind build brief)
+ One designated Team Leader required per team
+ Solo submissions are strictly NOT accepted
+ Each participant may only be a member of ONE team
+ All members must contribute — ghost members result in disqualification
+Registration: All team members must DM @optimuscrypto_ on Discord within 1 hour of event start to confirm their Team
+Leader. Late confirmations may result in disqualification.
+
+
+=== PAGE 2 ===
+VBH3 Summer Solstice · BOHBOOverse Ecosystem · Solana Edition · All decisions final
+Page 2
+Zero Tolerance — Duplicate Participation
+Any participant found registered across multiple teams will result in the disqualification of ALL teams they are associated with.
+No exceptions.
+
+
+=== PAGE 3 ===
+VBH3 Summer Solstice · BOHBOOverse Ecosystem · Solana Edition · All decisions final
+Page 3
+3. Timeline (All times in UTC)
+Hackathon Duration: June 5th – June 22nd (18 days)
+Phase
+Start
+End
+Details
+Registration
+June 5th
+June 10th
+All team members must DM @optimuscrypto_ on Discord to confirm Team
+Leader within 1 hour of event start
+Building
+June 10th
+June 18th
+Active build window — all code must be written during this period
+Submission
+June 18th
+June 20th
+Submit via public GitHub repo. Deadline: June 20th at 11:59 PM UTC — NO
+late submissions accepted
+Judging
+June 20th
+June 22nd
+Blind judging period — judges evaluate all submissions against the weighted
+rubric
+Announcements
+June 22nd
+June 22nd
+Winners announced via Discord on June 22nd
+Hard Deadline: Submissions received after June 20th at 11:59 PM UTC will be automatically rejected without review,
+regardless of circumstance. The Administrator will not grant extensions.
+4. Project Submission Requirements
+Every submission must include ALL of the following. Incomplete submissions are disqualified without appeal:
+ Public GitHub repository only — no GitLab or Codeberg. Must include open-source license file (MIT or Apache 2.0)
+ Live Solana Devnet link — must be deployed and accessible at time of judging
+ 2–3 minute demo video: must show full profile build → AI recommendation → sender approval → on-chain delivery →
+recipient claim. Royalty-free music only
+ Clear README: setup instructions, project description, AI model used, dataset structure, and theme connection
+ Dataset documentation: explain the social graph dataset — source, structure, and how it combines with on-chain data
+ AI Tool Disclosure: list ALL AI tools used in building the product AND powering the agent. Undisclosed use = violation
+ Written statement (100–300 words) explaining how the project reflects the Summer Solstice theme
+ Dockerfile (strongly encouraged, not mandatory)
+Strict Submission Integrity
+All code must have been written during the hackathon window. Pre-existing codebases, templates, or forks of prior BOHBOO
+submissions will result in immediate disqualification. The Administrator may request a live demo or code walkthrough from any
+team at any time.
+5. Judging Criteria (Weighted Rubric — Blind Judging)
+ Functionality & Technical Execution — 25%
+ Ecosystem Expansion & Impact — 20%
+ Brief Compliance (genuine AI-driven recommendations, both data sources, on-chain delivery) — 15%
+ Innovation — 15%
+ UI / UX — 10%
+ Cost Efficiency (LLM-assisted lean architecture, optimised API & compute usage) — 10%
+ Technical Quality — 5%
+Violation of any technical requirement results in automatic disqualification. Judges' scores are final and non-negotiable.
+Brief Compliance Note: Submissions where the AI recommendation is cosmetic or generic will score ZERO on Brief
+Compliance. Judges will submit different recipient profiles and relationship contexts to verify that recommendations change
+meaningfully.
+
+
+=== PAGE 4 ===
+VBH3 Summer Solstice · BOHBOOverse Ecosystem · Solana Edition · All decisions final
+Page 4
+6. Code of Conduct
+VBH3 enforces a strict zero-tolerance conduct policy. All participants are held to the highest standard of professionalism and
+integrity throughout the entire event.
+Participants MUST:
+ Act professionally and respectfully toward all participants, judges, and organizers
+ Produce original work — all code must be written during the contest window
+ Disclose all third-party libraries, AI tools, and assets used
+ Use only royalty-free or self-created audio, visual, and creative assets
+Participants MUST NOT:
+ Plagiarize, copy, or heavily derive from another team's submission
+ Sabotage, interfere with, or attack another team's infrastructure or repository
+ Submit malicious, illegal, or harmful code of any kind
+ Publicly disparage judges, organizers, or fellow participants
+ Attempt to identify or contact judges during the judging period
+Immediate Disqualification: Copying another team's work, sabotaging a fellow participant's project, submitting malicious
+code, or any act of deliberate interference will result in immediate and permanent disqualification with no right of appeal.
+7. Suspension Policy
+Conduct & Compliance Enforcement
+Any participant found in breach of the rules — including plagiarism, misconduct, technical violations, submission fraud, or
+conduct unbecoming of the BOHBOOverse community — will be suspended from eligibility in the next BOHBOO Hackathon.
+Repeated or severe violations may result in a permanent ban. Suspension decisions are made solely by the Administrator and
+are final.
+The entire team bears responsibility for the conduct of each of its members. A single member's violation may result in the full
+team's disqualification and suspension.
+Grounds for Suspension include, but are not limited to:
+ Violation of the Code of Conduct (Section 6)
+ Submission of plagiarized, copied, or fraudulent work
+ Deliberate interference with another team's project or infrastructure
+ Misrepresentation of team composition, identity, or eligibility
+ Harassment of judges, organizers, or fellow participants
+ Non-compliance with Administrator directives during the event
+8. Winners & Prizes
+Place
+Prize
+Extras
+1st Place
+Starlink Mini Kit + 1 Month Subscription
+NFT Award
+2nd Place
+$60 USD (Cash Gift)
+NFT Award
+3rd Place
+$30 USD (Cash Gift)
+NFT Award
+Prize Note: Cash gifts (2nd & 3rd) distributed in SOL or USDC at Administrator's discretion. Starlink prize subject to shipping
+eligibility in the winner's region.
+9. Legal & Liability
+
+
+=== PAGE 5 ===
+VBH3 Summer Solstice · BOHBOOverse Ecosystem · Solana Edition · All decisions final
+Page 5
+ Governing Law: Singapore Law
+ Disputes resolved via UNCITRAL arbitration in Singapore
+ Maximum liability cap: $100
+ Management bears no responsibility for technical failures, internet issues, lost submissions, or external service outages
+ The Administrator reserves the right to modify rules with reasonable notice to participants
+10. Privacy Policy
+Only essential participant data will be collected and used solely for hackathon administration and official announcements. No
+data will be shared with third parties.
+11. Sponsor & Promotion Rights
+Organizers and sponsors may publicly showcase winning projects with full credit attributed to the winning team. Participation
+grants organizers a non-exclusive right to feature submitted work in promotional materials.
+12. Communication & Contacts
+Official announcements via:
+ Discord — Designated VBH3 channels
+ Official X (Twitter) accounts
+Administrator / Host Contacts:
+ @optimuscrypto_ (Discord)
+ @BOHBOOcoin (Discord)
+Bee-na AI Onboarding & Support: https://dub.sh/startVBH
+13. Final Agreement
+By Participating: Registration or submission of a project by any team member constitutes full and binding acceptance of all
+rules in this document by the entire team. All decisions by the Administrator are final. These rules are strictly enforced — no
+exceptions.
+ VBH3 Summer Solstice · BOHBOOverse Ecosystem · Solana Edition · June 5 – June 22, 2026
+
+
+=== PAGE 6 ===
+VBH3 Summer Solstice · BOHBOOverse Ecosystem · Solana Edition · All decisions final
+Page 6
+ VBH3 — Official Build Brief
+ GiftMind: The Personalized Gifting Agent · Powered by Solana
+1. Event Identity
+Hackathon Name:
+VBH3 Summer Solstice
+Theme:
+Know Your Recipient — AI-powered personalized gifting on Solana
+Network:
+Solana Devnet
+Build Window:
+June 5 – June 22, 2026 (18 days)
+Max Budget:
+$50 USD per team
+License:
+MIT or Apache 2.0 (LICENSE file required in repo root)
+2. Challenge Title & One-Liner
+Challenge Title: GiftMind — The Personalized Gifting Agent
+One-Liner: Build an AI gifting agent that reads a recipient's social graph and on-chain activity to recommend and deliver the
+perfect on-chain gift — Instagram-level personalization meets Solana-powered execution.
+3. Problem Statement
+Gifting is broken in Web3. Senders either send generic tokens with no thought, or spend hours researching what
+someone might want. Meanwhile, every person leaves a rich trail of signals — the NFTs they hold, the tokens they
+swap, the content they engage with — that reveals exactly what they care about. Nobody is reading that data to make
+gifting personal. In Web2, Instagram knows you better than your friends do. In Web3, your wallet knows you even more
+— but nobody has built the agent that listens. GiftMind changes that: an AI agent that combines a recipient's on-chain
+history with their social graph to surface a gift recommendation that actually means something, then delivers it on-chain
+in one click.
+4. What to Build
+Participants must build GiftMind with the following four core flows:
+① Recipient Profile Builder
+The agent ingests two data sources: (1) the recipient's on-chain activity (wallet history, NFTs held, tokens swapped, protocols
+used on Solana Devnet) and (2) a simulated or real social graph dataset (Instagram-style: interests, engagement patterns,
+content affinities). These are combined into a recipient profile that the agent reasons over.
+② AI Gift Recommendation Engine
+The agent analyzes the recipient profile and produces a ranked list of personalized gift recommendations — specific tokens,
+NFTs, experiences, or on-chain assets — with a plain-language explanation for why each gift fits this recipient. The
+recommendation must feel personal, not generic.
+③ Sender Approval & On-Chain Delivery
+The sender reviews the recommendations, selects one, and approves the gift. The agent executes the on-chain transaction —
+sending SOL, an SPL token, or minting/transferring an NFT to the recipient's wallet on Solana Devnet. The gift is delivered
+on-chain, not just recommended.
+④ Recipient Claim & Reveal Experience
+The recipient receives a shareable claim link. When they open it, they see the gift, the personal message from the sender, and
+a one-line explanation of why the agent chose this gift for them. They claim it in one click.
+
+
+=== PAGE 7 ===
+VBH3 Summer Solstice · BOHBOOverse Ecosystem · Solana Edition · All decisions final
+Page 7
+Critical: AI Must Be Genuinely Personalized
+Submissions where the AI recommendation is cosmetic and the recommendation is generic will score ZERO on Brief
+Compliance. Judges will test by submitting different recipient profiles and checking if recommendations change meaningfully.
+The agent must also accept sender relationship context as an input (e.g. 'I am her father' / 'I am her boyfriend') and factor it
+into the recommendation. Same recipient + different sender = meaningfully different gift.
+
+
+=== PAGE 8 ===
+VBH3 Summer Solstice · BOHBOOverse Ecosystem · Solana Edition · All decisions final
+Page 8
+5. Technical Requirements
+ Built on Solana Devnet
+ Must use @solana/web3.js and/or Anchor framework for on-chain gift delivery
+ AI recommendation engine must use a real LLM or ML model (OpenAI, Anthropic, OpenRouter, or equivalent) —
+rule-based if/else logic does NOT qualify
+ Dataset must combine at least TWO sources: on-chain wallet activity (Solana Devnet) + a social graph / interest dataset
+(simulated Instagram-style data is acceptable)
+ Recipient profile must be constructed programmatically from the data — not manually hardcoded
+ On-chain gift delivery must be a real Devnet transaction (SOL transfer, SPL token send, or NFT mint/transfer)
+ Wallet integration required for the sender (Phantom, Solflare, or equivalent)
+ Recipient claim must work via a shareable link
+ Open source — MIT or Apache 2.0 license file in repo root
+6. Submission Requirements
+GitHub Repository: Public repo on GitHub only. No GitLab or Codeberg.
+Live Demo: Deployed and accessible at time of judging.
+Demo Video: 2–3 minutes. Must show: profile build → AI recommendation → sender approval → on-chain delivery → recipient
+claim. Royalty-free music only.
+Project Description: Problem, solution, how Solana is used, AI model used, dataset construction and combination method.
+License File: LICENSE file in repo root (MIT or Apache 2.0).
+AI Tool Disclosure: List ALL AI tools used in building the product AND powering the agent. Undisclosed use = violation.
+Dataset Documentation: Source, structure, and how the social graph dataset combines with on-chain data to drive
+recommendations.
+7. Team Confirmation Rule
+IMPORTANT — Mandatory Confirmation
+Every team member must DM @optimuscrypto_ on Discord within 1 hour of the event start to confirm who their Team Leader
+is. Late confirmations may result in disqualification.
+ Teams: 3–4 members
+ One designated Team Leader required
+ All members must contribute — ghost members = disqualification
+
+
+=== PAGE 9 ===
+VBH3 Summer Solstice · BOHBOOverse Ecosystem · Solana Edition · All decisions final
+Page 9
+8. Judging Criteria
+Criterion
+Points
+What Judges Look For
+Functionality
+25
+Full profile → recommendation → on-chain delivery → claim flow working end-to-end
+on Devnet
+Ecosystem Expansion &
+Impact
+20
+Clear potential to grow the BOHBOOverse & $BOHBOO ecosystem — does it make
+on-chain gifting meaningfully more personal, accessible, and scalable within the
+ecosystem?
+Brief Compliance
+15
+Is the AI recommendation genuinely data-driven? Are both data sources used? Is the
+gift delivered on-chain?
+Innovation
+15
+Novel approach to social graph + on-chain data fusion, agent design, or recipient
+experience
+UI / UX
+10
+Is the recommendation UI clear and compelling? Is the claim experience polished for a
+non-crypto recipient?
+Cost Efficiency
+10
+Did the team use LLMs (Grok, Claude, GPT) to design leaner architecture? Are API
+calls, compute, and on-chain transactions optimised to minimise cost without sacrificing
+quality?
+Technical Quality
+5
+Clean agent logic, solid data pipeline, secure on-chain transactions, no critical bugs
+TOTAL
+100
+
+
+=== PAGE 10 ===
+VBH3 Summer Solstice · BOHBOOverse Ecosystem · Solana Edition · All decisions final
+Page 10
+9. The Zara Test — Same Recipient, Two Senders, Two Different Gifts
+This scenario is the core intelligence test for GiftMind. Judges will run this exact scenario against every submission.
+The Setup: Zara is a 22-year-old woman active on social media with a Solana wallet. It's her birthday. Her father and her
+boyfriend both open GiftMind independently. Same recipient data. Different relationship context. GiftMind must produce
+meaningfully different recommendations.
+Zara's Profile — What GiftMind Sees
+On-chain: Holds 4 NFTs from a generative art collection. Swapped SOL → USDC twice. Never used a lending protocol.
+Wallet is 8 months old.
+Social graph: Follows fashion accounts, indie music artists, two crypto educators, a digital art curator, and university friends.
+High engagement on aesthetic content. Posts about travel, books, and occasionally DeFi threads.
+① The Father
+② The Boyfriend
+Sender Context
+Protective, proud, wants something meaningful for
+her future. Chooses gifts that signal stability and
+long-term thinking.
+Knows her tastes intimately, wants to impress her,
+chooses gifts that reflect her personality and their
+shared world.
+What GiftMind
+Weighs
+Father relationship → agent weights long-term value,
+safety, and growth over aesthetics.
+Boyfriend relationship → agent weights personal
+taste, aesthetic alignment, and emotional resonance.
+GiftMind
+Recommends
+A SOL savings gift — a meaningful amount of SOL
+sent to her wallet framed as a long-term hold.
+A 1-of-1 NFT mint from a generative artist whose
+style matches her existing collection.
+Zara's Claim
+"Your Dad chose this because he wants your future
+on-chain to be as solid as you are. Hold it."
+"He picked this because it matches your collection
+and your taste. He was paying attention."
+Builder Requirement
+GiftMind must accept sender relationship context as an input and factor it into the recommendation alongside the recipient's
+data profile. The same recipient must produce meaningfully different recommendations depending on who is sending. Judges
+will test this exact scenario. Submissions that fail this test score zero on Brief Compliance.
+ VBH3 Summer Solstice · GiftMind Build Brief · BOHBOOverse Hacks · Powered by Solana · All decisions final
+
+
