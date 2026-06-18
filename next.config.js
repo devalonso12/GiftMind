@@ -4,6 +4,9 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
+  experimental: {
+    esmExternals: 'loose',
+  },
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
