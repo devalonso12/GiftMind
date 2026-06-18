@@ -47,7 +47,7 @@ export function SendStep() {
 
         const escrowPub = process.env.NEXT_PUBLIC_SOLANA_ESCROW_PUBLIC_KEY;
         if (!escrowPub) throw new Error('Escrow public key not configured');
-        const connection = getConnection();
+        const connection = await getConnection();
         const toPub = new PublicKey(escrowPub);
         const fromPub = new PublicKey(senderWallet.address);
         const lamports = Math.round(feeDeposit * LAMPORTS_PER_SOL);
@@ -103,7 +103,7 @@ export function SendStep() {
         const { sufficient, balance } = await checkSufficientBalance(senderWallet.address, amount);
         if (!sufficient) throw new Error(`Insufficient balance: ${balance.toFixed(4)} SOL`);
 
-        const connection = getConnection();
+        const connection = await getConnection();
         const toPub = new PublicKey(escrowPub);
         const fromPub = new PublicKey(senderWallet.address);
         const lamports = Math.round(amount * LAMPORTS_PER_SOL);

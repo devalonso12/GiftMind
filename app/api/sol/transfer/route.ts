@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { Connection, Keypair, PublicKey, SystemProgram, Transaction, sendAndConfirmTransaction, LAMPORTS_PER_SOL } from '@solana/web3.js';
 
 export async function POST(req: Request) {
   try {
@@ -19,12 +18,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'SOLANA_ESCROW_SECRET_KEY not configured' }, { status: 500 });
     }
 
-    let payer: Keypair;
+    const { Connection, Keypair, PublicKey, SystemProgram, Transaction, sendAndConfirmTransaction, LAMPORTS_PER_SOL } = await import('@solana/web3.js');
+
+    let payer: any;
     if (secretRaw.trim().startsWith('[')) {
       payer = Keypair.fromSecretKey(Uint8Array.from(JSON.parse(secretRaw)));
     } else {
       const bs58 = await import('bs58');
-      payer = Keypair.fromSecretKey((bs58 as any).default ? (bs58 as any).default.decode(secretRaw) : bs58.decode(secretRaw));
+      const decode = (bs58 as any).default?.decode || (bs58 as any).decode;
+      payer = Keypair.fromSecretKey(decode(secretRaw));
     }
 
     const rpc = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.devnet.solana.com';
@@ -34,11 +36,7 @@ export async function POST(req: Request) {
     const lamports = Math.round(solAmount * LAMPORTS_PER_SOL);
 
     const tx = new Transaction().add(
-      SystemProgram.transfer({
-        fromPubkey: payer.publicKey,
-        toPubkey,
-        lamports,
-      })
+      SystemProgram.transfer({ fromPubkey: payer.publicKey, toPubkey, lamports })
     );
     const latest = await connection.getLatestBlockhash('confirmed');
     tx.recentBlockhash = latest.blockhash;
@@ -48,7 +46,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ signature });
   } catch (err: any) {
-    const message = err?.message || String(err);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: err?.message || String(err) }, { status: 500 });
   }
 }

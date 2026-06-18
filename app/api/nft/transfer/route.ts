@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import { Connection, Keypair, PublicKey } from '@solana/web3.js';
-import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 
 export async function POST(req: Request) {
   try {
@@ -15,12 +13,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'SOLANA_ESCROW_SECRET_KEY not configured' }, { status: 500 });
     }
 
-    let payer: Keypair;
+    const [{ Connection, Keypair, PublicKey }, { Token, TOKEN_PROGRAM_ID }] = await Promise.all([
+      import('@solana/web3.js'),
+      import('@solana/spl-token'),
+    ]);
+
+    let payer: any;
     if (secretRaw.trim().startsWith('[')) {
       payer = Keypair.fromSecretKey(Uint8Array.from(JSON.parse(secretRaw)));
     } else {
       const bs58 = await import('bs58');
-      payer = Keypair.fromSecretKey((bs58 as any).default ? (bs58 as any).default.decode(secretRaw) : bs58.decode(secretRaw));
+      const decode = (bs58 as any).default?.decode || (bs58 as any).decode;
+      payer = Keypair.fromSecretKey(decode(secretRaw));
     }
 
     const rpc = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.devnet.solana.com';
@@ -36,7 +40,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true, signature });
   } catch (err: any) {
-    const message = err?.message || String(err);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: err?.message || String(err) }, { status: 500 });
   }
 }

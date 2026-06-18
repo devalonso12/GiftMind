@@ -1,5 +1,3 @@
-import { Connection } from '@solana/web3.js';
-
 const RPC_ENDPOINTS = [
   process.env.NEXT_PUBLIC_SOLANA_RPC_URL,
   'https://api.devnet.solana.com',
@@ -9,11 +7,13 @@ const RPC_ENDPOINTS = [
 
 let currentRpcIndex = 0;
 
-export const getConnection = () => {
+export const getConnection = async () => {
+  const { Connection } = await import('@solana/web3.js');
   return new Connection(RPC_ENDPOINTS[currentRpcIndex] || RPC_ENDPOINTS[0], 'confirmed');
 };
 
 export const getBalanceWithFallback = async (publicKey: any): Promise<number> => {
+  const { Connection } = await import('@solana/web3.js');
   for (let i = 0; i < RPC_ENDPOINTS.length; i++) {
     const idx = (currentRpcIndex + i) % RPC_ENDPOINTS.length;
     try {

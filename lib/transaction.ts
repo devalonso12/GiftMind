@@ -1,4 +1,3 @@
-import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { getConnection, getBalanceWithFallback } from './solana-config';
 
 export interface TransactionResult {
@@ -8,8 +7,13 @@ export interface TransactionResult {
   amount?: number;
 }
 
-export function isValidSolanaAddress(address: string): boolean {
+async function getWeb3() {
+  return import('@solana/web3.js');
+}
+
+export async function isValidSolanaAddress(address: string): Promise<boolean> {
   try {
+    const { PublicKey } = await getWeb3();
     new PublicKey(address);
     return true;
   } catch {
@@ -23,6 +27,7 @@ export function getExplorerLink(signature: string, cluster: 'devnet' | 'mainnet'
 
 export async function checkBalance(walletAddress: string): Promise<number> {
   try {
+    const { PublicKey, LAMPORTS_PER_SOL } = await getWeb3();
     const publicKey = new PublicKey(walletAddress);
     const balance = await getBalanceWithFallback(publicKey);
     return balance / LAMPORTS_PER_SOL;
@@ -33,7 +38,8 @@ export async function checkBalance(walletAddress: string): Promise<number> {
 
 export async function requestAirdrop(walletAddress: string, amountSol: number = 2): Promise<string | null> {
   try {
-    const connection = getConnection();
+    const { PublicKey, LAMPORTS_PER_SOL } = await getWeb3();
+    const connection = await getConnection();
     const publicKey = new PublicKey(walletAddress);
     const signature = await connection.requestAirdrop(publicKey, amountSol * LAMPORTS_PER_SOL);
     await connection.confirmTransaction(signature, 'confirmed');
@@ -58,7 +64,6 @@ export async function checkSufficientBalance(
   }
 }
 
-// Generate mock signature for demo
 export function generateMockSignature(): string {
   const chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
   let sig = '';
