@@ -4,15 +4,17 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
-  experimental: {
-    esmExternals: 'loose',
-  },
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
       encoding: false,
       bufferutil: false,
       'utf-8-validate': false,
+      ws: false,
+      'cross-fetch': false,
+      'node-fetch': false,
+      net: false,
+      tls: false,
     };
     return config;
   },

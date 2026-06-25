@@ -12,7 +12,6 @@ import { SendStep } from './steps/send-step';
 import { CompleteStep } from './steps/complete-step';
 import { ProgressIndicator } from './progress-indicator';
 import { Header } from './header';
-import { SolarSystemBG } from './solar-system-bg';
 
 const STEP_ORDER = ['connect', 'relationship', 'search', 'profile', 'recommend', 'approve', 'send', 'complete'] as const;
 
@@ -39,7 +38,6 @@ export function GiftFlowApp() {
 
   return (
     <>
-      <SolarSystemBG />
       <div className="relative z-10 min-h-screen">
         <Header showDisconnect={showDisconnect} />
         <div className="container mx-auto px-4 py-8 max-w-3xl">

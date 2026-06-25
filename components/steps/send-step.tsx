@@ -6,12 +6,40 @@ import { Alert, AlertDescription } from '../ui/alert';
 import { Loader2, ArrowLeft, CheckCircle, ExternalLink, AlertCircle, Sun } from 'lucide-react';
 import { createGift, updateGiftStatus } from '../../lib/supabase-client';
 import { getExplorerLink, checkSufficientBalance } from '../../lib/transaction';
-import { Transaction, SystemProgram, PublicKey } from '@solana/web3.js';
 import { getConnection, LAMPORTS_PER_SOL } from '../../lib/solana-config';
 import { useToast } from '../../hooks/use-toast';
 
 function generateClaimCode(): string {
   return crypto.randomUUID().split('-')[0].toUpperCase();
+}
+
+function detectProvider(): any {
+  if (typeof window === 'undefined') return null;
+  const w = window as any;
+  if (w.solana?.isPhantom || w.solana?.isBackpack || w.solana?.isGlow || w.solana?.isTorus) return w.solana;
+  if (w.solflare) return w.solflare;
+  if (w.backpack) return w.backpack;
+  if (w.solana) return w.solana;
+  return null;
+}
+
+async function requestProviderTx(wallet: any, tx: any, connection: any): Promise<string> {
+  if (wallet.signAndSendTransaction) {
+    const res = await wallet.signAndSendTransaction(tx);
+    const sig = res?.signature || res;
+    if (!sig) throw new Error('Wallet did not return a signature');
+    await connection.confirmTransaction(sig, 'confirmed');
+    return sig;
+  }
+  if (wallet.signTransaction) {
+    const signed = await wallet.signTransaction(tx);
+    const raw = signed.serialize();
+    const sig = await connection.sendRawTransaction(raw);
+    if (!sig) throw new Error('Wallet did not return a signature');
+    await connection.confirmTransaction(sig, 'confirmed');
+    return sig;
+  }
+  throw new Error('Wallet does not support signing');
 }
 
 export function SendStep() {
@@ -22,16 +50,17 @@ export function SendStep() {
   } = useGiftFlow();
   const [signature, setSignature] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
-  const [confirming, setConfirming] = useState(false);
   const { toast } = useToast();
 
   const sendGift = async () => {
     if (!senderWallet) { setError('Missing sender wallet info'); return; }
-    setConfirming(true);
     setSending(true);
     setLoading(true);
     setError(null);
     try {
+      const web3 = await import('@solana/web3.js');
+      const { Transaction, SystemProgram, PublicKey } = web3;
+
       const giftType = recommendation?.giftType === 'NFT' ? 'NFT' : 'SOL';
       const claimCode = generateClaimCode();
       setClaimCode(claimCode);
@@ -40,7 +69,6 @@ export function SendStep() {
       let nftMintAddress: string | undefined;
 
       if (giftType === 'NFT') {
-        // NFT flow: server-side mint via escrow wallet (only deposit fee from sender)
         const feeDeposit = Math.max(amount || 0.01, 0.01);
         const { sufficient, balance } = await checkSufficientBalance(senderWallet.address, feeDeposit);
         if (!sufficient) throw new Error(`Insufficient balance: ${balance.toFixed(4)} SOL`);
@@ -59,33 +87,15 @@ export function SendStep() {
         tx.recentBlockhash = latest.blockhash;
         tx.feePayer = fromPub;
 
-        const w = typeof window !== 'undefined' ? (window as any) : null;
-        const provider = w?.solana || w?.solflare || w?.backpack || null;
+        const provider = detectProvider();
         if (!provider) throw new Error('Wallet provider not found');
+        txSig = await requestProviderTx(provider, tx, connection);
 
-        if (provider.signAndSendTransaction) {
-          const res = await provider.signAndSendTransaction(tx);
-          txSig = res?.signature || res;
-          if (!txSig) throw new Error('Wallet did not return a signature');
-          await connection.confirmTransaction(txSig, 'confirmed');
-        } else if (provider.signTransaction) {
-          const signed = await provider.signTransaction(tx);
-          const raw = signed.serialize();
-          txSig = await connection.sendRawTransaction(raw);
-          if (!txSig) throw new Error('Wallet did not return a signature');
-          await connection.confirmTransaction(txSig, 'confirmed');
-        } else {
-          throw new Error('Wallet does not support signing');
-        }
-
-        // Mint NFT on-chain via server endpoint
         const mintResp = await fetch('/api/nft/mint', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name: 'GiftMind Keepsake',
-            symbol: 'GFT',
-            uri: process.env.NEXT_PUBLIC_DEFAULT_NFT_IMAGE || 'https://placehold.co/600x600/png',
+            recipientAddress: recipientWallet || escrowPub,
           }),
         });
         const mintText = await mintResp.text();
@@ -94,10 +104,9 @@ export function SendStep() {
           throw new Error(`NFT mint failed: server returned ${mintResp.status} — ${mintText.slice(0, 200)}`);
         }
         if (!mintResp.ok) throw new Error(mintResult.error || 'NFT minting failed');
-        nftMintAddress = mintResult.mintAddress;
-        setSignature(mintResult.mintSignature);
+        nftMintAddress = mintResult.mint;
+        setSignature(mintResult.signatures?.[mintResult.signatures.length - 1] || mintResult.signatures?.[0]);
       } else {
-        // SOL flow: transfer sender → escrow
         const escrowPub = process.env.NEXT_PUBLIC_SOLANA_ESCROW_PUBLIC_KEY;
         if (!escrowPub) throw new Error('Escrow public key not configured');
         const { sufficient, balance } = await checkSufficientBalance(senderWallet.address, amount);
@@ -115,28 +124,22 @@ export function SendStep() {
         tx.recentBlockhash = latest.blockhash;
         tx.feePayer = fromPub;
 
-        const w = typeof window !== 'undefined' ? (window as any) : null;
-        const provider = w?.solana || w?.solflare || w?.backpack || null;
-        if (!provider) throw new Error('Wallet provider not found');
-
-        if (provider.signAndSendTransaction) {
-          const res = await provider.signAndSendTransaction(tx);
-          txSig = res?.signature || res;
-          if (!txSig) throw new Error('Wallet did not return a signature');
-          await connection.confirmTransaction(txSig, 'confirmed');
-        } else if (provider.signTransaction) {
-          const signed = await provider.signTransaction(tx);
-          const raw = signed.serialize();
-          txSig = await connection.sendRawTransaction(raw);
-          if (!txSig) throw new Error('Wallet did not return a signature');
-          await connection.confirmTransaction(txSig, 'confirmed');
+        const provider = detectProvider();
+        if (!provider) {
+          const resp = await fetch('/api/sol/transfer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ recipientAddress: escrowPub, amount }),
+          });
+          const json = await resp.json();
+          if (!resp.ok) throw new Error(json.error || 'Server SOL transfer failed');
+          txSig = json.signature;
         } else {
-          throw new Error('Wallet does not support signing');
+          txSig = await requestProviderTx(provider, tx, connection);
         }
-        setSignature(txSig);
+        setSignature(txSig || null);
       }
 
-      // Create gift record
       const giftData = await createGift({
         sender_wallet: senderWallet.address,
         recipient_wallet: recipientWallet || undefined,
@@ -184,7 +187,6 @@ export function SendStep() {
           try { message = JSON.stringify(err); } catch { /* ignore */ }
         }
 
-        // Map common errors to actionable suggestions
         const lower = message.toLowerCase();
         let action: { type: 'faucet' | 'wallet' | 'retry' | null; href?: string } = { type: null };
         if (lower.includes('insufficient balance') || lower.includes('insufficient funds') || lower.includes('insufficient lamports')) {
@@ -196,7 +198,6 @@ export function SendStep() {
         }
 
         setError(message);
-        // show a toast with suggestion
         if (action.type === 'faucet') {
           toast({ title: 'Insufficient funds', description: 'Add Devnet SOL from the Solana faucet to continue.' });
         } else if (action.type === 'wallet') {
@@ -215,7 +216,10 @@ export function SendStep() {
           <Sun className="h-8 w-8 text-amber-400" />
         </div>
         <h3 className="text-lg font-semibold text-solar mb-2">Sending Gift</h3>
-        <p className="text-slate-500 text-sm">Processing on Solana Devnet...</p>
+        <p className="text-slate-500 text-sm">Processing on Solana...</p>
+        {signature && (
+          <p className="text-xs text-slate-600 mt-2 font-mono break-all">{signature.slice(0, 24)}...</p>
+        )}
         <div className="flex justify-center mt-4 gap-1">
           {[0, 1, 2].map(i => (<div key={i} className="w-2 h-2 rounded-full bg-amber-400/40 animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />))}
         </div>
@@ -234,7 +238,6 @@ export function SendStep() {
           <button onClick={() => setStep('approve')} className="flex-1 h-11 rounded-xl surface-stellar text-slate-400 flex items-center justify-center gap-2"><ArrowLeft className="h-4 w-4" />Back</button>
           <div className="flex-1 flex gap-2">
             <button onClick={sendGift} disabled={isLoading} className="flex-1 h-11 rounded-xl btn-solar flex items-center justify-center gap-2"><Loader2 className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />Retry</button>
-            {/* Helpful quick action for common errors */}
             {error.toLowerCase().includes('insufficient') && (
               <a href="https://faucet.solana.com" target="_blank" rel="noreferrer" className="h-11 inline-flex items-center justify-center rounded-xl border border-amber-400/20 px-4 text-amber-300">Get Devnet SOL</a>
             )}
@@ -243,21 +246,6 @@ export function SendStep() {
             )}
           </div>
         </div>
-      </div>
-    );
-  }
-
-  if (confirming) {
-    return (
-      <div className="surface-stellar-strong rounded-2xl p-8 text-center animate-slide-up">
-        <CheckCircle className="h-12 w-12 mx-auto text-emerald-400 mb-4" />
-        <h3 className="text-lg font-semibold text-solar mb-2">Confirming</h3>
-        <p className="text-slate-500 text-sm">Waiting for blockchain confirmation...</p>
-        {signature && (
-          <button onClick={() => window.open(getExplorerLink(signature), '_blank')} className="mt-4 text-xs text-amber-400 flex items-center gap-1.5 mx-auto">
-            <ExternalLink className="h-3 w-3" />View on Explorer
-          </button>
-        )}
       </div>
     );
   }
